@@ -1,0 +1,16 @@
+{
+    "name": "LightGBM",
+    "description": "",
+    "function": "classification",
+    "scoreCodeType": "python",
+    "trainTable": " ",
+    "trainCodeType": "Python",
+    "algorithm": "LightGBM",
+    "targetVariable": "y",
+    "targetEvent": 1,
+    "targetLevel": "BINARY",
+    "eventProbVar": "EM_EVENTPROBABILITY",
+    "modeler": "Ryan Ma",
+    "tool": "Python 3",
+    "toolVersion": "3.9.10"
+}
