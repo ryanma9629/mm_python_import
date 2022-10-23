@@ -36,24 +36,36 @@ lgbm_pred = lgbm.predict(X_test, raw_score=True)
 np.testing.assert_equal(bst_pred, lgbm_pred)
 
 # Viya connection
-USER = 'sasdemo'
-PWD = 'sas123'
-HOST = '172.26.38.244'
-sess = Session(HOST, USER, PWD, protocol='http')
-conn = sess.as_swat()
+user = 'sasdemo'
+pwd = 'sas123'
+host = '172.26.38.244'
+viya_sess = Session(host, user, pwd, protocol='http')
+viya_conn = viya_sess.as_swat()
 
 # proj / model metadata
-PROJ = 'Python LightGBM Test 1022v1'
-MODNAME = 'LightGBM'
-MODDESC = ''
-MODALGO = 'LightGBM'
-MODELER = 'Ryan Ma'
-EVENT = 1
-MODFOLDER = 'model/LightGBM'
+proj = 'Python LightGBM Test 1022v2'
+mod_name = 'LightGBM1022v2'
+mod_desc = 'A LightGBM model imported from file.'
+mod_algo = 'LightGBM'
+mod_owner = 'Ryan Ma'
+target_event = 1
+mod_folder = 'model/LightGBM'
 
 # import into MM
-import_sklearn(PROJ, lgbm, MODNAME, MODDESC, MODALGO, MODELER,
-              X_train, y_train, X_test, y_test, EVENT, MODFOLDER, conn)
+import_sklearn(viya_conn,
+               mod_folder,
+               proj,
+               lgbm,
+               mod_name,
+               mod_desc,
+               mod_algo,
+               mod_owner,
+               target_event,
+               X_train,
+               y_train,
+               X_test,
+               y_test)
+
 
 # import pickle
 # with open('model/LightGBM/LightGBM.pickle', 'rb') as pFile:
