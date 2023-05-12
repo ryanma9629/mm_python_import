@@ -1,0 +1,17 @@
+{
+    "name": "RandomForest",
+    "description": "Description for the RandomForest model",
+    "scoreCodeType": "python",
+    "trainTable": "",
+    "trainCodeType": "Python",
+    "algorithm": "Random Forest Classifier",
+    "function": "Classification",
+    "targetVariable": "BAD",
+    "targetEvent": "0",
+    "targetLevel": "BINARY",
+    "eventProbVar": "P_0",
+    "modeler": "Ryan Ma",
+    "tool": "Python 3",
+    "toolVersion": "3.10.11",
+    "properties": []
+}

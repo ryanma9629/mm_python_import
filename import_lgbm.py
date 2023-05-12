@@ -43,23 +43,23 @@ viya_sess = Session(host, user, pwd, protocol='http')
 viya_conn = viya_sess.as_swat()
 
 # proj / model metadata
-proj = 'Python LightGBM Test 1022v2'
-mod_name = 'LightGBM1022v2'
-mod_desc = 'A LightGBM model imported from file.'
-mod_algo = 'LightGBM'
-mod_owner = 'Ryan Ma'
+project_name = 'Python LightGBM Test 1022v2'
+model_name = 'LightGBM1022v2'
+model_description = 'A LightGBM model imported from file.'
+model_algorithm = 'LightGBM'
+model_owner = 'Ryan Ma'
 target_event = 1
-mod_folder = 'model/LightGBM'
+model_folder = 'model/LightGBM'
 
 # import into MM
 import_sklearn(viya_conn,
-               mod_folder,
-               proj,
+               model_folder,
+               project_name,
                lgbm,
-               mod_name,
-               mod_desc,
-               mod_algo,
-               mod_owner,
+               model_name,
+               model_description,
+               model_algorithm,
+               model_owner,
                target_event,
                X_train,
                y_train,

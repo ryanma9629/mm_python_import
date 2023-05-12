@@ -1,0 +1,17 @@
+{
+    "name": "Logistic",
+    "description": "Description for the Logistic model",
+    "scoreCodeType": "python",
+    "trainTable": "",
+    "trainCodeType": "Python",
+    "algorithm": "Logistic Regression",
+    "function": "Classification",
+    "targetVariable": "BAD",
+    "targetEvent": "0",
+    "targetLevel": "BINARY",
+    "eventProbVar": "P_0",
+    "modeler": "Ryan Ma",
+    "tool": "Python 3",
+    "toolVersion": "3.10.11",
+    "properties": []
+}
