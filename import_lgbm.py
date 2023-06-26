@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import lightgbm as lgb
 from sasctl import Session
-from import_sklearn import import_sklearn
+from import_sklearn import import_sklearn_classification
 
 # read LightGBM native model from file
 bst = lgb.Booster(model_file='test_lgm.txt')
@@ -52,7 +52,7 @@ target_event = 1
 model_folder = 'model/LightGBM'
 
 # import into MM
-import_sklearn(viya_conn,
+import_sklearn_classification(viya_conn,
                model_folder,
                project_name,
                lgbm,

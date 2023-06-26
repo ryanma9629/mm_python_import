@@ -14,18 +14,18 @@ import pandas as pd
 from sasctl import pzmm
 
 
-def import_sklearn(project_name,
-                   model_object,
-                   model_name,
-                   model_description,
-                   model_algorithm,
-                   model_owner,
-                   target_event,
-                   X_train,
-                   y_train,
-                   model_folder,
-                   X_test=None,
-                   y_test=None):
+def import_sklearn_classification(project_name,
+                                  model_object,
+                                  model_name,
+                                  model_description,
+                                  model_algorithm,
+                                  model_owner,
+                                  target_event,
+                                  X_train,
+                                  y_train,
+                                  model_folder,
+                                  X_test=None,
+                                  y_test=None):
 
     Path(model_folder).mkdir(parents=True, exist_ok=True)
 
@@ -35,10 +35,10 @@ def import_sklearn(project_name,
             os.remove(os.path.join(model_folder, f))
 
     # generate model pickle file
-    pzmm.PickleModel().pickle_trained_model(model_prefix=model_name,
-                                            trained_model=model_object,
-                                            pickle_path=model_folder,
-                                            is_h2o_model=False)
+    pzmm.PickleModel.pickle_trained_model(model_prefix=model_name,
+                                          trained_model=model_object,
+                                          pickle_path=model_folder,
+                                          is_h2o_model=False)
 
     # Write input variable mapping to a json file
     pzmm.JSONFiles.write_var_json(input_data=X_train,
@@ -95,15 +95,20 @@ def import_sklearn(project_name,
                                   predict_method=[
                                       model_object.predict_proba, [float, float]],
                                   overwrite_model=True)
+    pzmm.ScoreCode.score_code = ""
 
 
 if __name__ == '__main__':
+    # import numpy as np
     import pandas as pd
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import LabelEncoder
     from sklearn.linear_model import LogisticRegression
     from sklearn.tree import DecisionTreeClassifier
     from sklearn.ensemble import RandomForestClassifier
+    from sklearn.neural_network import MLPClassifier
+    # from lightgbm import LGBMClassifier
+    # import scikitplot as skplt
     from sasctl import Session
 
     raw = pd.read_csv('data/hmeq.csv')
@@ -120,6 +125,10 @@ if __name__ == '__main__':
     for c in col_cat:
         X.loc[:, c] = le.fit_transform(X[c])
 
+    X = X.astype('float')
+
+    pd.concat([X, y], axis=1).to_csv('data/hmeq_imp_enc.csv', index=False)
+
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.3, random_state=123)
 
@@ -129,34 +138,44 @@ if __name__ == '__main__':
     lr.fit(X_train, y_train)
     rf = RandomForestClassifier()
     rf.fit(X_train, y_train)
+    nn = MLPClassifier()
+    nn.fit(X_train, y_train)
+    # lgbm = LGBMClassifier()
+    # lgbm.fit(X_train, y_train)
+
+    # lr_y_proba = lr.predict_proba(X_test)
+    # skplt.metrics.plot_lift_curve(y_test, lr_y_proba)
 
     viya_user = 'sasdemo1'
     viya_pwd = 'Orion123'
-    viya_host = 'viya4'
+    viya_host = 'viya01'
     viya_session = Session(viya_host, viya_user, viya_pwd, protocol='http')
     viya_connection = viya_session.as_swat()
 
-    model_objects = [dt, lr, rf]
-    model_names = ['DecisionTree', 'Logistic', 'RandomForest']
+    model_objects = [dt, lr, rf, nn]
+    model_names = ['DecisionTree', 'LogisticRegression',
+                   'RandomForest', 'NeuralNetwork']
     model_descriptions = ['Description for the ' +
                           m + ' model' for m in model_names]
-    model_algorithms = ['Decision Tree Classifier',
-                        'Logistic Regression', 'Random Forest Classifier']
+    model_algorithms = ['Decision Tree', 'Logistic Regression',
+                        'Random Forest', 'Neural Network']
     model_folders = ['model/' + m for m in model_names]
     model_owner = 'Ryan Ma'
     target_event = 1
-    project_name = 'HMEQ(Python) v202305121541'
+    project_name = 'HMEQ(Python) v20230626'
 
     for (model_object, model_name, model_description, model_algorithm, model_folder) in zip(model_objects, model_names, model_descriptions, model_algorithms, model_folders):
-        import_sklearn(project_name=project_name,
-                       model_object=model_object,
-                       model_name=model_name,
-                       model_description=model_description,
-                       model_algorithm=model_algorithm,
-                       model_owner=model_owner,
-                       target_event=target_event,
-                       X_train=X_train,
-                       y_train=y_train,
-                       model_folder=model_folder,
-                       X_test=X_test,
-                       y_test=y_test)
+        import_sklearn_classification(project_name=project_name,
+                                      model_object=model_object,
+                                      model_name=model_name,
+                                      model_description=model_description,
+                                      model_algorithm=model_algorithm,
+                                      model_owner=model_owner,
+                                      target_event=target_event,
+                                      X_train=X_train,
+                                      y_train=y_train,
+                                      model_folder=model_folder,
+                                      X_test=X_test,
+                                      y_test=y_test)
+
+    pd.DataFrame()
