@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import lightgbm as lgb
 from sasctl import Session
-from import_sklearn import import_sklearn_classification
+from import_sklearn_mutimodels import import_sklearn_classification
 
 # read LightGBM native model from file
 bst = lgb.Booster(model_file='test_lgm.txt')
