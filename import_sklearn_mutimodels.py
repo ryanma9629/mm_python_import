@@ -143,14 +143,10 @@ if __name__ == '__main__':
     # lgbm = LGBMClassifier()
     # lgbm.fit(X_train, y_train)
 
-    # lr_y_proba = lr.predict_proba(X_test)
-    # skplt.metrics.plot_lift_curve(y_test, lr_y_proba)
-
     viya_user = 'sasdemo1'
     viya_pwd = 'Orion123'
     viya_host = 'viya01'
-    viya_session = Session(viya_host, viya_user, viya_pwd, protocol='http')
-    viya_connection = viya_session.as_swat()
+    viya_session = Session(viya_host, viya_user, viya_pwd, protocol='http').as_swat()
 
     model_objects = [dt, lr, rf, nn]
     model_names = ['DecisionTree', 'LogisticRegression',
@@ -177,5 +173,3 @@ if __name__ == '__main__':
                                       model_folder=model_folder,
                                       X_test=X_test,
                                       y_test=y_test)
-
-    pd.DataFrame()
